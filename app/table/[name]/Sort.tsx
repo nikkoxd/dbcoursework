@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function Sort({ columns }: {
@@ -10,6 +10,7 @@ export default function Sort({ columns }: {
   const [selectedOrder, setSelectedOrder] = useState<"asc" | "desc">("asc");
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value;
@@ -24,10 +25,12 @@ export default function Sort({ columns }: {
       setSelectedOrder(value as "asc" | "desc");
     }
 
-    router.push(`?${new URLSearchParams({
-      sortBy: newColumn,
-      sortOrder: newOrder,
-    }).toString()}`);
+    const currentParams = new URLSearchParams(searchParams.toString());
+    currentParams.set("sortBy", newColumn);
+    currentParams.set("sortOrder", newOrder);
+
+    router.push(`?${currentParams.toString()}`);
+
     router.refresh();
   }
 

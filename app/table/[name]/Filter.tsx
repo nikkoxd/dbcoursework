@@ -1,11 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Filter({ columns }: {
   columns: { column_name: string; }[];
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -22,7 +23,12 @@ export default function Filter({ columns }: {
       filters[key] = value as string;
     }
 
-    router.push(`?${new URLSearchParams(filters).toString()}`);
+    const currentParams = new URLSearchParams(searchParams.toString());
+    for (const [key, value] of Object.entries(filters)) {
+      currentParams.set(key, value);
+    }
+
+    router.push(`?${currentParams.toString()}`);
     router.refresh();
   }
 
