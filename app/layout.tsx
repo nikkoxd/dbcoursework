@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { pool } from "@/lib/pg";
 import TableSelector from "./TableSelector";
+import ReportSelector from "./ReportSelector";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,6 +42,7 @@ export default async function RootLayout({
         <header className="container mx-auto py-4 flex items-center gap-2">
           Таблица:
           <TableSelector tables={await getTables()} />
+          <ReportSelector />
         </header>
         {children}
       </body>
