@@ -139,8 +139,12 @@ export default async function Page({
 
   return (
     <main className="container mx-auto">
-      <Filter columns={columns} />
-      <Table name={name} columns={columns} data={await getData()} deleteAction={deleteAction} editAction={editAction}/>
+      <section className="flex justify-between items-center">
+        <Filter columns={columns} />
+      </section>
+      <section className="pt-4">
+        <Table name={name} columns={columns} data={await getData()} deleteAction={deleteAction} editAction={editAction} />
+      </section>
     </main>
   );
 }
