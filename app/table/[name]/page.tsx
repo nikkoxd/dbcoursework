@@ -56,19 +56,25 @@ export default async function Page({
       case "personel":
         primaryKeyName = "inn";
         primaryKeyValue = (row as Personel).inn;
+        break;
       case "rooms":
         primaryKeyName = "number";
         primaryKeyValue = (row as Room).number;
+        break;
       case "available_rooms":
         primaryKeyName = "number";
         primaryKeyValue = (row as AvailableRoom).number;
+        break;
       case "hotel_occupancy":
         primaryKeyName = "hotel_name";
         primaryKeyValue = (row as HotelOccupancy).hotel_name;
+        break;
       default:
         primaryKeyName = "id";
         primaryKeyValue = (row as Hotel).id;
     }
+
+    console.log(name, primaryKeyName);
 
     const query = `delete from ${name} where ${primaryKeyName} = ${primaryKeyValue}`;
 
