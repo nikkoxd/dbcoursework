@@ -3,6 +3,7 @@ import Table from "./Table";
 import Filter from "./Filter";
 import { AvailableRoom, Hotel, HotelOccupancy, Personel, Room, TableSchema } from "@/types/schema";
 import { redirect } from "next/navigation";
+import Sort from "./Sort";
 
 export default async function Page({
   params,
@@ -27,19 +28,32 @@ export default async function Page({
     let query = `select * from ${schema}.${name}`;
     const values: string[] = [];
     let whereClause = "";
+    let orderByClause = "";
 
     const filters = await searchParams;
 
     if (Object.keys(filters).length > 0) {
-      whereClause = " where ";
-      const filterConditions = Object.keys(filters).map((key, index) => {
+      const filterConditions = Object.keys(filters).map((key) => {
+        if (key === "sortBy" || key === "sortOrder") {
+          return null;
+        }
+
         values.push(filters[key] as string);
-        return `${key} = $${index + 1}`;
-      });
-      whereClause += filterConditions.join(" and ");
+        return `${key} = $${values.length}`;
+      }).filter(condition => condition !== null);
+
+      if (filterConditions.length > 0) {
+        whereClause = " where " + filterConditions.join(" and ");
+      }
     }
 
-    query += whereClause;
+    if (filters.sortBy && filters.sortOrder) {
+      orderByClause = ` order by ${filters.sortBy} ${filters.sortOrder}`
+    }
+
+    query += whereClause + orderByClause;
+
+    console.log(query);
 
     const result = await pool.query(query, values);
 
@@ -135,15 +149,42 @@ export default async function Page({
     redirect(`/table/${name}`);
   }
 
+  async function createAction(formData: FormData) {
+    "use server";
+
+    const values: string[] = [];
+    const keys: string[] = [];
+    const placeholders: string[] = [];
+
+    for (const [key, value] of formData.entries()) {
+      if (value === "") {
+        continue;
+      }
+
+      keys.push(key);
+      values.push(value as string);
+      placeholders.push(`$${values.length}`);
+    }
+
+    const query = `INSERT INTO ${name} (${keys.join(', ')}) VALUES (${placeholders.join(', ')})`;
+
+    console.log(query);
+
+    await pool.query(query, values);
+
+    redirect(`/table/${name}`);
+  }
+
   const columns = await getColumns();
 
   return (
     <main className="container mx-auto">
-      <section className="flex justify-between items-center">
+      <section className="flex flex-col gap-4">
         <Filter columns={columns} />
+        <Sort columns={columns} />
       </section>
       <section className="pt-4">
-        <Table name={name} columns={columns} data={await getData()} deleteAction={deleteAction} editAction={editAction} />
+        <Table name={name} columns={columns} data={await getData()} deleteAction={deleteAction} editAction={editAction} createAction={createAction} />
       </section>
     </main>
   );

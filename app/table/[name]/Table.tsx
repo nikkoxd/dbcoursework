@@ -1,17 +1,20 @@
 "use client";
 
 import { AvailableRoom, Hotel, HotelOccupancy, Personel, Room, TableSchema } from "@/types/schema";
-import Modal from "./Modal";
+import EditModal from "./EditModal";
 import { useState } from "react";
+import CreateModal from "./CreateModal";
 
-export default function Table({ name, columns, data, deleteAction, editAction }: {
+export default function Table({ name, columns, data, deleteAction, editAction, createAction }: {
   name: string;
   columns: { column_name: string; }[];
   data: TableSchema[];
   deleteAction: (row: TableSchema) => void;
   editAction: (formData: FormData) => void;
+  createAction: (formData: FormData) => void;
 }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState<TableSchema | null>(null);
 
   function getPrimaryKey(row: TableSchema) {
@@ -29,21 +32,35 @@ export default function Table({ name, columns, data, deleteAction, editAction }:
     }
   }
 
-  function showModal(row: TableSchema) {
+  function showEditModal(row: TableSchema) {
     setSelectedRow(row);
-    setIsModalOpen(true);
+    setIsEditModalOpen(true);
   }
 
-  function closeModal() {
+  function closeEditModal() {
     setSelectedRow(null);
-    setIsModalOpen(false);
+    setIsEditModalOpen(false);
+  }
+
+  function showCreateModal() {
+    setIsCreateModalOpen(true);
+  }
+
+  function closeCreateModal() {
+    setIsCreateModalOpen(false);
   }
 
   return (
     <>
-      {isModalOpen && (
-        <Modal columns={columns} row={selectedRow as {[key: string]: string | number | Date | null}} onClose={closeModal} editAction={editAction}/>
+      {isEditModalOpen && (
+        <EditModal columns={columns} row={selectedRow as {[key: string]: string | number | Date | null}} onClose={closeEditModal} editAction={editAction}/>
       )}
+      {isCreateModalOpen && (
+        <CreateModal columns={columns} onClose={closeCreateModal} createAction={createAction}/>
+      )}
+      <div className="pb-4 flex justify-between items-center">
+        <button className="px-2 py-1 bg-gray-700 text-white rounded-md" onClick={() => showCreateModal()}>Добавить запись</button>
+      </div>
       <table className="w-full text-left">
         <thead>
           <tr>
@@ -66,7 +83,7 @@ export default function Table({ name, columns, data, deleteAction, editAction }:
               ))}
               <td className="p-2 border-b border-gray-600 flex gap-2">
                 <button className="underline" onClick={() => deleteAction(row)}>Удалить</button>
-                <button className="underline" onClick={() => showModal(row)}>Изменить</button>
+                <button className="underline" onClick={() => showEditModal(row)}>Изменить</button>
               </td>
             </tr>
           ))}
