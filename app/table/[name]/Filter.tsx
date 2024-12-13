@@ -36,9 +36,9 @@ export default function Filter({ columns }: {
     <form onSubmit={handleSubmit} className="flex gap-2 items-center">
       Фильтр:
       {columns.map((column) => (
-        <input type="text" className="py-1 px-2 border rounded-lg bg-gray-800 border-gray-700 focus:outline-none focus:border-gray-500" key={column.column_name} name={column.column_name} placeholder={column.column_name} />
+        <input type="text" className="py-1 px-2 border rounded-lg bg-gray-100 dark:bg-gray-800 border-gray-700 focus:outline-none focus:border-gray-500" key={column.column_name} name={column.column_name} placeholder={column.column_name} />
       ))}
-      <button type="submit" className="px-2 py-1 bg-gray-700 text-white rounded-md">Искать</button>
+      <button type="submit" className="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-md">Искать</button>
     </form>
   );
 }

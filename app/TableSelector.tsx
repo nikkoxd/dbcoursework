@@ -21,7 +21,7 @@ export default function TableSelector({ tables }: {
 
   return (
     <>
-      <select className="p-2 bg-gray-800 border rounded-lg border-gray-700 focus:outline-none focus:border-gray-500" value={selectedTable} onChange={handleChange}>
+      <select className="p-2 bg-gray-100 dark:bg-gray-800 border rounded-lg border-gray-700 focus:outline-none focus:border-gray-500" value={selectedTable} onChange={handleChange}>
         <option value="">Выберите таблицу</option>
         {tables.map((table) => (
           <option key={table.table_name}>{table.table_name}</option>

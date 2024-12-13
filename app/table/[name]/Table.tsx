@@ -59,15 +59,15 @@ export default function Table({ name, columns, data, deleteAction, editAction, c
         <CreateModal columns={columns} onClose={closeCreateModal} createAction={createAction}/>
       )}
       <div className="pb-4 flex justify-between items-center">
-        <button className="px-2 py-1 bg-gray-700 text-white rounded-md" onClick={() => showCreateModal()}>Добавить запись</button>
+        <button className="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:text-white rounded-md" onClick={() => showCreateModal()}>Добавить запись</button>
       </div>
       <table className="w-full text-left">
         <thead>
           <tr>
             {columns.map((column) => (
-              <th className="p-2 bg-gray-900 border-b border-gray-600" key={column.column_name}>{column.column_name}</th>
+              <th className="p-2 bg-gray-200 dark:bg-gray-900 border-b border-gray-600" key={column.column_name}>{column.column_name}</th>
             ))}
-            <th className="p-2 bg-gray-900 border-b border-gray-600">Действия</th>
+            <th className="p-2 bg-gray-200 dark:bg-gray-900 border-b border-gray-600">Действия</th>
           </tr>
         </thead>
         <tbody>

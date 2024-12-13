@@ -37,14 +37,14 @@ export default function Sort({ columns }: {
   return (
     <div className="flex gap-2 items-center">
       Сортировка:
-      <select className="p-2 bg-gray-800 border rounded-lg border-gray-700 focus:outline-none focus:border-gray-500" name="column" value={selectedColumn} onChange={handleChange}>
+      <select className="p-2 bg-gray-100 dark:bg-gray-800 border rounded-lg border-gray-700 focus:outline-none focus:border-gray-500" name="column" value={selectedColumn} onChange={handleChange}>
         <option value="">Без сортировки</option>
         {columns.map((column) => (
           <option key={column.column_name}>{column.column_name}</option>
         ))}
       </select>
 
-      <select className="p-2 bg-gray-800 border rounded-lg border-gray-700 focus:outline-none focus:border-gray-500" name="order" value={selectedOrder} onChange={handleChange}>
+      <select className="p-2 bg-gray-100 dark:bg-gray-800 border rounded-lg border-gray-700 focus:outline-none focus:border-gray-500" name="order" value={selectedOrder} onChange={handleChange}>
         <option value="asc">По возрастанию</option>
         <option value="desc">По убыванию</option>
       </select>

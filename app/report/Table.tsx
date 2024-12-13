@@ -10,7 +10,7 @@ export default function Table({ columns, data, pkey }: {
       <thead>
         <tr>
           {columns.map((column) => (
-            <th className="p-2 bg-gray-900 border-b border-gray-600" key={column.column_name}>{column.column_name}</th>
+            <th className="p-2 bg-gray-200 dark:bg-gray-900 border-b border-gray-600" key={column.column_name}>{column.column_name}</th>
           ))}
         </tr>
       </thead>
